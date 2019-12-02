@@ -1,14 +1,56 @@
 <!DOCTYPE html>
 <html>
+    <meta charset="UTF-8">
     <head>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+        <script src="https://unpkg.com/vue-select@3.0.0"></script>
+        <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.3/dist/css/uikit.min.css" />
+        <link rel="stylesheet" href="kick.css">
+        <!-- UIkit JS -->
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.3/dist/js/uikit.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.3/dist/js/uikit-icons.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        
-        <div id="app">
-            {{ message }}
+        <div class="uk-container" id="app">
+            <template v-if="matchid != 0">
+                
+            </template>
+            <template v-else>
+                <div class="uk-grid-small uk-child-width-expand@s uk-text-center" uk-grid>
+                    <div>
+                        <button class="uk-button uk-button-secondary uk-width-1-1 uk-button-large">Start Match</button>
+                    </div>
+                </div>
+                
+                <div class="uk-grid-small uk-child-width-expand@s uk-text-center" uk-grid>
+                    <div class="uk-width-1-2">
+                        <div class="uk-card uk-card-default uk-card-body red">
+                            <v-select :options="selectList" v-model="reddef"></v-select>
+                        </div>
+                    </div>
+                    <div class="uk-width-1-2">
+                        <div class="uk-card uk-card-default uk-card-body blue">
+                            <v-select :options="selectList" v-model="bluedef"></v-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-grid-small uk-child-width-expand@s uk-text-center" uk-grid>
+                        <div class="uk-width-1-2">
+                            <div class="uk-card uk-card-default uk-card-body red">
+                                <v-select :options="selectList" v-model="redfor"></v-select>
+                            </div>
+                        </div>
+                        <div class="uk-width-1-2">
+                            <div class="uk-card uk-card-default uk-card-body blue">
+                                <v-select :options="selectList" v-model="bluefor"></v-select>
+                            </div>
+                        </div>
+                </div>
+            </template>
         </div>
-        
         <script src="index.js"></script>
     </body>
 </html>
