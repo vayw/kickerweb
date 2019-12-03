@@ -9,10 +9,10 @@ var app = new Vue({
         players: {},
         selectList: [],
         lineupReady: false,
-        reddef: "",
-        redfor: "",
-        bluedef: "",
-        bluefor: "",
+        reddef: null,
+        redfor: null,
+        bluedef: null,
+        bluefor: null,
     },
     methods: {
         loadPlayersList: function () {
@@ -26,14 +26,14 @@ var app = new Vue({
                 console.log("loadPlayersList: error")
             });
         },
-        checkP: function (opt) {
-            if (opt === this.redfor) {
-                return false;
+        matchReady: function () {
+            if (this.reddef === null || this.redfor === null || this.bluedef === null || this.bluefor === null) {
+                return true
             } else {
-                return true;
+                return false
             }
         },
-    }
+    },
 })
 
 app.loadPlayersList()
