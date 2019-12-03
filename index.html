@@ -12,18 +12,42 @@
     <body>
         <div class="container" id="app">
             <template v-if="matchid != 0">
-                
+                <div class="one-col">
+                    <dev class="scoreboard">{{ score.red }}</dev>
+                    <dev class="scoreboard">:</dev>
+                    <dev class="scoreboard">{{ score.blue}}</dev>
+                </div>
+                <div class="two-col">
+                        <div class="col-left red">
+                            <button @click="score('reddef')" class="large-button">{{ reddef }}</button>
+                        </div>
+                        <div class="col-right blue">
+                            <button @click="score('bluedef')" class="large-button">{{ bluedef }}<button>
+                        </div>
+                    </div>
+                    <div class="two-col">
+                        <div class="col-left red">
+                            <button @click="score('redfor')" class="large-button">{{ redfor }}</button>
+                        </div>
+                        <div class="col-right blue">
+                            <button @click="score('bluefor')" class="large-button">{{ bluefor }}</button>
+                        </div>
+                </div>
+                <div class="one-col">
+                        <button @click="finishMatch()" class="large-button">Finish Match</button>
+                </div>
+
             </template>
             <template v-else>
                 <div class="one-col">
-                    <button :disabled="matchReady()" class="large-button">Start Match</button>
+                    <button :disabled="matchReady()" @click="startMatch()" class="large-button">Start Match</button>
                 </div>
                 <div class="two-col">
                     <div class="col-left red">
                         <v-select :options="selectList" v-model="reddef" placeholder="Defender" />
                     </div>
                     <div class="col-right blue">
-                        <v-select :options="selectList" v-model="bluedef" placeholder="Defender"></v-select>
+                        <v-select :options="selectList" v-model="bluedef" placeholder="Defender" />
                     </div>
                 </div>
                 <div class="two-col">

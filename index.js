@@ -13,6 +13,7 @@ var app = new Vue({
         redfor: null,
         bluedef: null,
         bluefor: null,
+        score: {red: 0, blue: 0},
     },
     methods: {
         loadPlayersList: function () {
@@ -33,6 +34,18 @@ var app = new Vue({
                 return false
             }
         },
+        startMatch: function () {
+            this.$http.post(this.api_host + '/api/match/start', {'lineup': [
+                {'id': this.players[this.reddef], 'team': 'Red', 'position': 'Defender'},
+                {'id': this.players[this.redfor], 'team': 'Red', 'position': 'Forward'},
+                {'id': this.players[this.bluedef], 'team': 'Blue', 'position': 'Defender'},
+                {'id': this.players[this.bluefor], 'team': 'Blue', 'position': 'Forward'},
+            ]}).then(response => {
+                if (response.body['err'] === 'nil') {
+                    this.matchid = response.body['matchid']
+                }
+            })
+        }
     },
 })
 

@@ -27,13 +27,13 @@
 }
 
 .col-left {
-    display: inline;
+    display: inline-block;
     width: 45%;
     float: left;
 }
 
 .col-right {
-    display: inline;
+    display: inline-block;
     width: 45%;
     float: right;
 }
@@ -41,4 +41,9 @@
 .large-button {
     width: 90%;
     padding: 1em;
+}
+
+.scoreboard {
+    padding: 0.5em 2em;
+    font-size: 2em;
 }
