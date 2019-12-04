@@ -4,37 +4,45 @@
     <head>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
-        <script src="https://unpkg.com/vue-select@3.0.0"></script>
-        <link rel="stylesheet" href="https://unpkg.com/vue-select@3.0.0/dist/vue-select.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue-select@3.0.0"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-select@3.0.0/dist/vue-select.css">
         <link rel="stylesheet" href="kick.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
+        <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <div class="container" id="app">
             <template v-if="matchid != 0">
                 <div class="one-col">
-                    <dev class="scoreboard">{{ score.red }}</dev>
-                    <dev class="scoreboard">:</dev>
-                    <dev class="scoreboard">{{ score.blue}}</dev>
+                    <loading :active.sync="ApiCallInProgress" 
+                    :can-cancel="false"
+                    ></loading>
+                    <div class="scoreboard">{{ score.red }}</div>
+                    <div class="scoreboard">:</div>
+                    <div class="scoreboard">{{ score.blue}}</div>
                 </div>
                 <div class="two-col">
-                        <div class="col-left red">
-                            <button @click="score('reddef')" class="large-button">{{ reddef }}</button>
-                        </div>
-                        <div class="col-right blue">
-                            <button @click="score('bluedef')" class="large-button">{{ bluedef }}<button>
-                        </div>
+                    <div class="col-left red">
+                        <button @click="Score('reddef')" class="large-button-f red">{{ reddef }}</button>
                     </div>
-                    <div class="two-col">
-                        <div class="col-left red">
-                            <button @click="score('redfor')" class="large-button">{{ redfor }}</button>
-                        </div>
-                        <div class="col-right blue">
-                            <button @click="score('bluefor')" class="large-button">{{ bluefor }}</button>
-                        </div>
+                    <div class="col-right blue">
+                        <button @click="Score('bluedef')" class="large-button-f blue">{{ bluedef }}</button>
+                    </div>
+                </div>
+                <div class="two-col">
+                    <div class="col-left red">
+                        <button @click="Score('redfor')" class="large-button-f red">{{ redfor }}</button>
+                    </div>
+                    <div class="col-right blue">
+                        <button @click="Score('bluefor')" class="large-button-f blue">{{ bluefor }}</button>
+                    </div>
                 </div>
                 <div class="one-col">
-                        <button @click="finishMatch()" class="large-button">Finish Match</button>
+                    <button @click="endMatch()" class="large-button topgap">Finish Match</button>
+                </div>
+                <div class="one-col topgap">
+                    <p class="topgap">{{ Message }}</p>
                 </div>
 
             </template>
@@ -57,6 +65,9 @@
                     <div class="col-right blue">
                         <v-select :options="selectList" v-model="bluefor" placeholder="Forward" />
                     </div>
+                </div>
+                <div class="one-col topgap">
+                    <p class="topgap">{{ Message }}</p>
                 </div>
             </template>
         </div>
