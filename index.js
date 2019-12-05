@@ -15,7 +15,7 @@ var app = new Vue({
         redfor: null,
         bluedef: null,
         bluefor: null,
-        score: {red: 0, blue: 0},
+        score: {'red': 0, 'blue': 0},
         temp_score_team: null,
         ApiCallInProgress: false,
         Message: "",
@@ -51,6 +51,7 @@ var app = new Vue({
                     this.matchid = response.body['matchid']
                     this.ApiCallInProgress = false
                 } else {
+                    console.log(response.body['err'])
                     this.Message = response.body['err']
                 }
             })
@@ -84,6 +85,7 @@ var app = new Vue({
                     this.bluedef =  null
                     this.bluefor =  null
                     this.Message = "last winner: " + response.body['Winner']
+                    this.score = {'red': 0, 'blue': 0}
                 } else {
                     this.Message = response.body['err']
                 }
