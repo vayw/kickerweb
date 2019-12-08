@@ -6,7 +6,7 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "http://127.0.0.1:8080",
+        api_host: "",
         matchid: 0,
         players: {},
         selectList: [],
