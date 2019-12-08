@@ -6,7 +6,7 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "http://kicker.jzzy.ru",
+        api_host: "http://127.0.0.1:8080",
         matchid: 0,
         players: {},
         selectList: [],
@@ -19,14 +19,15 @@ var app = new Vue({
         temp_score_team: null,
         ApiCallInProgress: false,
         Message: "",
+        last_matches: []
     },
     methods: {
         loadPlayersList: function () {
             this.$http.get(this.api_host + '/api/players').then(response => {
                 this.selectList = []
                 response.body.forEach(element => {
-                    this.players[element.Name] = element.ID
-                    this.selectList = Object.keys(this.players)
+                    this.players[element.ID] = element.Name
+                    this.selectList.push({"id": element.ID, "label": element.Name})
                     });
                 }, response => {
                 console.log("loadPlayersList: error")
@@ -42,10 +43,10 @@ var app = new Vue({
         startMatch: function () {
             this.ApiCallInProgress = true
             this.$http.post(this.api_host + '/api/match/start', {'lineup': [
-                {'id': this.players[this.reddef], 'team': 'Red', 'position': 'Defender'},
-                {'id': this.players[this.redfor], 'team': 'Red', 'position': 'Forward'},
-                {'id': this.players[this.bluedef], 'team': 'Blue', 'position': 'Defender'},
-                {'id': this.players[this.bluefor], 'team': 'Blue', 'position': 'Forward'},
+                {'id': this.reddef.id, 'team': 'Red', 'position': 'Defender'},
+                {'id': this.redfor.id, 'team': 'Red', 'position': 'Forward'},
+                {'id': this.bluedef.id, 'team': 'Blue', 'position': 'Defender'},
+                {'id': this.bluefor.id, 'team': 'Blue', 'position': 'Forward'},
             ]}).then(response => {
                 if (response.body['err'] === 'nil') {
                     this.matchid = response.body['matchid']
@@ -63,7 +64,7 @@ var app = new Vue({
             } else {
                 this.temp_score_team = 'blue'
             }
-            this.$http.post(this.api_host + '/api/match/score', {'pid': this.players[this[position]], 'matchid': this.matchid})
+            this.$http.post(this.api_host + '/api/match/score', {'pid': this[position]["id"], 'matchid': this.matchid})
             .then(response => {
                 this.ApiCallInProgress = false
                 if (response.body['err'] === 'nil') {
@@ -91,11 +92,24 @@ var app = new Vue({
                 }
             })
         },
-        selectFilter: function (option) {
-            console.log(option)
-            return false
+        lastMatches: function() {
+            this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 3})
+            .then(response => {
+                response.body.forEach(element => {
+                    mr = {"red": {"score": element.Red}, "blue": {"score": element.Blue}}
+                    element.Lineup.forEach(pos => {
+                        if (pos.team === "Red") {
+                            mr.red[pos.position] = pos.id
+                        } else {
+                            mr.blue[pos.position] = pos.id
+                        }
+                    })
+                    this.last_matches.push(mr)
+                })
+            })
         }
     },
 })
 
 app.loadPlayersList()
+app.lastMatches()

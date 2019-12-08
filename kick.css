@@ -57,3 +57,50 @@
     padding: 0.5em 2em;
     font-size: 1em;
 }
+
+.icon {
+    height: 20px;
+}
+
+.results_l {
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+.results_r {
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.results_c {
+    width: 5%;
+    margin: 0;
+    padding: 3px;
+}
+
+.c_align {
+    align-content: center;
+}
+
+#Footer {
+    position:fixed;
+    bottom:0;
+  }
+
+#scorers {
+    background-color: cornflowerblue;
+}
+
+.goals_num {
+    display: inline-block;
+    margin: 3px 3px 10px;
+    background-color: rgb(150, 228, 195);
+    width: 40px;
+}
+
+.stats_player {
+    display: inline-block;
+}

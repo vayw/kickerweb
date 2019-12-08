@@ -24,18 +24,18 @@
                 </div>
                 <div class="two-col">
                     <div class="col-left red">
-                        <button @click="Score('reddef')" class="large-button-f red">{{ reddef }}</button>
+                        <button @click="Score('reddef')" class="large-button-f red">{{ reddef.label }}</button>
                     </div>
                     <div class="col-right blue">
-                        <button @click="Score('bluedef')" class="large-button-f blue">{{ bluedef }}</button>
+                        <button @click="Score('bluedef')" class="large-button-f blue">{{ bluedef.label }}</button>
                     </div>
                 </div>
                 <div class="two-col">
                     <div class="col-left red">
-                        <button @click="Score('redfor')" class="large-button-f red">{{ redfor }}</button>
+                        <button @click="Score('redfor')" class="large-button-f red">{{ redfor.label }}</button>
                     </div>
                     <div class="col-right blue">
-                        <button @click="Score('bluefor')" class="large-button-f blue">{{ bluefor }}</button>
+                        <button @click="Score('bluefor')" class="large-button-f blue">{{ bluefor.label }}</button>
                     </div>
                 </div>
                 <div class="one-col">
@@ -70,7 +70,35 @@
                     <p class="topgap">{{ Message }}</p>
                 </div>
             </template>
+
+            <!-- Last matches -->
+            <div class="one-col">
+                <div>LAST MATCHES:</div>
+                <template v-for="item in this.last_matches">
+                    <div class="c_align">
+                        <div class="scoreboard results_l red">{{ item.red.score }}</div>
+                        <div class="scoreboard results_c">:</div>
+                        <div class="scoreboard results_r blue">{{ item.blue.score }}</div>
+                    </div class="c_align">
+                    <div>
+                        <div class="scoreboard results_l">{{ players[item.red.Defender] }}</div>
+                        <div class="scoreboard results_c"><img class="icon" src="/static/goal_icon.svg" /></div>
+                        <div class="scoreboard results_r">{{ players[item.blue.Defender] }}</div>
+                    </div class="c_align">
+                    <div>
+                        <div class="scoreboard results_l">{{ players[item.red.Forward] }}</div>
+                        <div class="scoreboard results_c"><img class="icon" src="/static/forward_icon.svg" /></div>
+                        <div class="scoreboard results_r">{{ players[item.blue.Forward] }}</div>
+                    </div>
+                    <div class="c_align">-----------</div>
+                </template>
+            </div>
         </div>
+
+
         <script src="index.js"></script>
+
+        <!-- credits -->
+        <div id="Footer">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     </body>
 </html>
