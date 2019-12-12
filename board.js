@@ -6,7 +6,7 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "http://127.0.0.1:8001",
+        api_host: "",
         players: {},
         ApiCallInProgress: false,
         Message: "",
