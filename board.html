@@ -9,15 +9,67 @@
         <link rel="stylesheet" href="kick.css">
         <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
         <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-            <div class="container" id="app">
-                <div class="scorers">Scorers:</div>
-                <div v-for="item in ratings_goals">
-                    <div class="goals_num">{{ item.Total }}</div><div class="stats_player">{{ players[item.Id] }}</div>
+        <div id="app">
+            <nav class="level">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Matches</p>
+                        <p class="title">{{ overall.Matches }}</p>
+                    </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Goals</p>
+                        <p class="title">{{ overall.Goals }}</p>
+                    </div>
+                </div>
+            </nav>
+            <div class="columns">
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">Scorers:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_goals">
+                                    <td>{{ item.Total }}</td><td>{{ players[item.Id] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">Win rate:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>%</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_winrate">
+                                    <td>{{ players[item.Id] }}</td><td>{{ item.WinRate }}</td>
+                                    <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+        </div>
     <script src="board.js"></script>
     </body>
 </html>

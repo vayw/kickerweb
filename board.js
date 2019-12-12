@@ -6,11 +6,13 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "",
+        api_host: "http://127.0.0.1:8001",
         players: {},
         ApiCallInProgress: false,
         Message: "",
-        ratings_goals: {}
+        ratings_goals: {},
+        overall: {},
+        ratings_winrate: {},
     },
     methods: {
         loadPlayersList: function () {
@@ -29,8 +31,23 @@ var app = new Vue({
                 this.ratings_goals = response.body
             });
         },
-    }   
+        loadOverall: function () {
+            this.$http.get(this.api_host + '/api/stats/overall').then(response => {
+                this.overall = response.body
+            });
+        },
+        loadWinrate: function () {
+            this.$http.get(this.api_host + '/api/stats/winrate').then(response => {
+                this.ratings_winrate = response.body
+            });
+        },
+    },
+    mounted: function() {
+        this.$nextTick(function () {
+            app.loadPlayersList()
+            app.loadGoalsRatings()
+            app.loadOverall()
+            app.loadWinrate()
+        })
+    }
 })
-
-app.loadPlayersList()
-app.loadGoalsRatings()
