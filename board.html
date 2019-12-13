@@ -60,8 +60,50 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in ratings_winrate">
-                                    <td>{{ players[item.Id] }}</td><td>{{ item.WinRate }}</td>
+                                <tr v-for="item in ratings_winrate.Overall">
+                                    <td>{{ players[item.Id] }}</td><td>{{ item.WinRate.toFixed(2) }}</td>
+                                    <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">Forwards win rate:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>%</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_winrate.Forwards">
+                                    <td>{{ players[item.Id] }}</td><td>{{ item.WinRate.toFixed(2) }}</td>
+                                    <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">Defenders win rate:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>%</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_winrate.Defenders">
+                                    <td>{{ players[item.Id] }}</td><td>{{ item.WinRate.toFixed(2) }}</td>
                                     <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
                                 </tr>
                             </tbody>
