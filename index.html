@@ -18,12 +18,12 @@
                     <loading :active.sync="ApiCallInProgress"
                     :can-cancel="false"
                     ></loading>
+                    <div class="one-col">
+                        <button @click="endMatch()" class="large-button topgap">Finish Match</button>
+                    </div>
                     <div class="scoreboard">{{ score.red }}</div>
                     <div class="scoreboard">:</div>
                     <div class="scoreboard">{{ score.blue}}</div>
-                </div>
-                <div class="one-col">
-                    <button @click="endMatch()" class="large-button topgap">Finish Match</button>
                 </div>
                 <div class="two-col">
                     <div class="col-left red">

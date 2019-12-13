@@ -57,12 +57,14 @@
                                     <th>%</th>
                                     <th>Wins</th>
                                     <th>Losses</th>
+                                    <th>T.Played</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in ratings_winrate.Overall">
                                     <td>{{ players[item.Id] }}</td><td>{{ item.WinRate.toFixed(2) }}</td>
                                     <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
+                                    <td>{{ item.Wins + item.Losses }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -78,12 +80,14 @@
                                     <th>%</th>
                                     <th>Wins</th>
                                     <th>Losses</th>
+                                    <th>T.Played</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in ratings_winrate.Forwards">
                                     <td>{{ players[item.Id] }}</td><td>{{ item.WinRate.toFixed(2) }}</td>
                                     <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
+                                    <td>{{ item.Wins + item.Losses }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -99,12 +103,14 @@
                                     <th>%</th>
                                     <th>Wins</th>
                                     <th>Losses</th>
+                                    <th>T.Played</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in ratings_winrate.Defenders">
                                     <td>{{ players[item.Id] }}</td><td>{{ item.WinRate.toFixed(2) }}</td>
                                     <td>{{ item.Wins }}</td><td>{{ item.Losses }}</td>
+                                    <td>{{ item.Wins + item.Losses }}</td>
                                 </tr>
                             </tbody>
                         </table>
