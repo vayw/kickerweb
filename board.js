@@ -13,6 +13,7 @@ var app = new Vue({
         ratings_goals: {},
         overall: {},
         ratings_winrate: {},
+        matches: []
     },
     methods: {
         loadPlayersList: function () {
@@ -41,6 +42,23 @@ var app = new Vue({
                 this.ratings_winrate = response.body
             });
         },
+        loadMatches: function () {
+            this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 10})
+            .then(response => {
+                response.body.forEach(element => {
+                    mr = {"red": {"score": element.Red}, "blue": {"score": element.Blue}}
+                    element.Lineup.forEach(pos => {
+                        if (pos.team === "Red") {
+                            mr.red[pos.position] = pos.id
+                        } else {
+                            mr.blue[pos.position] = pos.id
+                        }
+                    })
+                    mr['goals'] = element.Goals
+                    this.matches.push(mr)
+                })
+            })
+        },
     },
     mounted: function() {
         this.$nextTick(function () {
@@ -48,6 +66,7 @@ var app = new Vue({
             app.loadGoalsRatings()
             app.loadOverall()
             app.loadWinrate()
+            app.loadMatches()
         })
     }
 })

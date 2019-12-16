@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="UTF-8">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-select@3.0.0"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-select@3.0.0/dist/vue-select.css">
+        <link rel="stylesheet" href="kick.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
+        <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div id="app">
+            <nav class="level">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Matches</p>
+                        <p class="title">{{ overall.Matches }}</p>
+                    </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">Goals</p>
+                        <p class="title">{{ overall.Goals }}</p>
+                    </div>
+                </div>
+            </nav>
+            <div class="columns">
+                <div v-for="m in matches" class="column">
+                    <div class="columns">
+                        <div class="column is-half has-background-danger">
+                          <p>{{ m.red.score }} </p>
+                          <p>{{ players[m.red.Defender] }}</p>
+                          <p>{{ players[m.red.Forward] }}</p>
+                        </div>
+                        <div class="column is-half has-background-link">
+                          <p>{{ m.blue.score }} </p>
+                          <p>{{ players[m.blue.Defender] }}</p>
+                          <p>{{ players[m.blue.Forward] }}</p>
+                        </div>
+                    </div>
+                    <template v-for="goal in m.goals">
+                        <div v-bind:class="{'has-text-left': goal.ID in [m.red.Defender, m.red.Forward]}">{{ players[goal.ID] }}</div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    <script src="board.js"></script>
+    </body>
+</html>
