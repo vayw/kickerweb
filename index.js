@@ -6,7 +6,7 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "",
+        api_host: "http://10.11.12.6:8081",
         matchid: 0,
         players: {},
         selectList: [],
@@ -109,7 +109,10 @@ var app = new Vue({
             })
         }
     },
+    mounted: function() {
+        this.$nextTick(function () {
+            app.loadPlayersList()
+            app.lastMatches()
+        })
+    }
 })
-
-app.loadPlayersList()
-app.lastMatches()

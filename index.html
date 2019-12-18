@@ -6,9 +6,10 @@
         <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue-select@3.0.0"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-select@3.0.0/dist/vue-select.css">
-        <link rel="stylesheet" href="kick.css">
         <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
         <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <link rel="stylesheet" href="kick.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
@@ -47,32 +48,40 @@
 
             </template>
             <template v-else>
-                <div class="one-col">
-                    <button :disabled="matchReady()" @click="startMatch()" class="large-button">Start Match</button>
+                <div class="columns is-mobile">
+                    <div class="column is-full">
+                        <button :disabled="matchReady()" @click="startMatch()" class="button is-fullwidth">Start Match</button>
+                    </div>
                 </div>
-                <div class="two-col">
-                    <div class="col-left red">
+                <div class="columns is-mobile has-background-danger">
+                    <div class="column is-full">
                         <v-select :options="selectList" v-model="reddef" placeholder="Defender" />
                     </div>
-                    <div class="col-right blue">
+                </div>
+                <div class="columns is-mobile has-background-danger">
+                    <div class="column is-full">
+                        <v-select :options="selectList" v-model="redfor" placeholder="Forward" />
+                    </div>
+                </div>
+                <div class="columns is-mobile has-background-info">
+                    <div class="column">
                         <v-select :options="selectList" v-model="bluedef" placeholder="Defender" />
                     </div>
                 </div>
-                <div class="two-col">
-                    <div class="col-left red">
-                        <v-select :options="selectList" v-model="redfor" placeholder="Forward" />
-                    </div>
-                    <div class="col-right blue">
+                <div class="columns is-mobile has-background-info">
+                    <div class="column">
                         <v-select :options="selectList" v-model="bluefor" placeholder="Forward" />
                     </div>
                 </div>
-                <div class="one-col topgap">
-                    <p class="topgap">{{ Message }}</p>
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <p class="topgap">{{ Message }}</p>
+                    </div>
                 </div>
             </template>
 
             <!-- Last matches -->
-            <div class="one-col">
+            <div class="columns">
                 <div>LAST MATCHES:</div>
                 <template v-for="item in this.last_matches">
                     <div class="c_align">
@@ -93,9 +102,8 @@
                     <div class="c_align">-----------</div>
                 </template>
             </div>
+
         </div>
-
-
         <script src="index.js"></script>
 
         <!-- credits -->
