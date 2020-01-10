@@ -11,6 +11,7 @@ var app = new Vue({
         ApiCallInProgress: false,
         Message: "",
         ratings_goals: {},
+	ratings_goals_avg: {},
         overall: {},
         ratings_winrate: {},
         matches: []
@@ -29,7 +30,14 @@ var app = new Vue({
         },
         loadGoalsRatings: function () {
             this.$http.post(this.api_host + '/api/stats/ratings/goals').then(response => {
-                this.ratings_goals = response.body
+                this.ratings_goals = response.body.result
+		let avg_unordered = {}
+		this.ratings_goals.forEach(elem => {
+		    avg_unordered[elem.Total / elem.Games] = elem.Id
+		});
+		Object.keys(avg_unordered).sort().reverse().forEach(function(key) {
+		    app.ratings_goals_avg[key] = avg_unordered[key];
+		});
             });
         },
         loadOverall: function () {
@@ -45,7 +53,7 @@ var app = new Vue({
         loadMatches: function () {
             this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 10})
             .then(response => {
-                response.body.forEach(element => {
+                response.body.result.forEach(element => {
                     mr = {"red": {"score": element.Red}, "blue": {"score": element.Blue}}
                     element.Lineup.forEach(pos => {
                         if (pos.team === "Red") {
