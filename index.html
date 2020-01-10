@@ -15,35 +15,74 @@
     <body>
         <div class="container" id="app">
             <template v-if="matchid != 0">
-                <div class="one-col">
-                    <loading :active.sync="ApiCallInProgress"
-                    :can-cancel="false"
-                    ></loading>
-                    <div class="one-col">
-                        <button @click="endMatch()" class="large-button topgap">Finish Match</button>
-                    </div>
-                    <div class="scoreboard">{{ score.red }}</div>
-                    <div class="scoreboard">:</div>
-                    <div class="scoreboard">{{ score.blue}}</div>
-                </div>
-                <div class="two-col">
-                    <div class="col-left red">
-                        <button @click="Score('reddef')" class="large-button-f red">{{ reddef.label }}</button>
-                    </div>
-                    <div class="col-right blue">
-                        <button @click="Score('bluedef')" class="large-button-f blue">{{ bluedef.label }}</button>
+                <div class="columns is-mobile is-centered">
+                    <div class="column is-full">
+                        <loading :active.sync="ApiCallInProgress"
+                        :can-cancel="false">
+                        </loading>
+                        <button @click="endMatch()" class="button is-fullwidth">Finish Match</button>
                     </div>
                 </div>
-                <div class="two-col">
-                    <div class="col-left red">
-                        <button @click="Score('redfor')" class="large-button-f red">{{ redfor.label }}</button>
+                <div class="c_align columns is-mobile is-centered">
+                    <div class="scoreboard has-text-right red column">{{ score.red }}</div>
+                    <div class="scoreboard has-text-centered column is-narrow">:</div>
+                    <div class="scoreboard has-text-left blue column">{{ score.blue}}</div>
+                </div>
+                <!-- Red defender -->
+                <div class="columns is-mobile">
+                    <div class="column is-three-quarters">
+                        <button @click="Score('reddef')" class="button is-fullwidth has-background-danger">
+                            <img class="icon_b" src="/static/goal_icon.svg" />
+                            {{ reddef.label }}
+                        </button>
                     </div>
-                    <div class="col-right blue">
-                        <button @click="Score('bluefor')" class="large-button-f blue">{{ bluefor.label }}</button>
+                    <div class="column is-one-quarters">
+                        <button @click="Auto('reddef')" class="button is-fullwidth has-background-danger">AUTO</button>
                     </div>
                 </div>
-                <div class="one-col topgap">
-                    <p class="topgap">{{ Message }}</p>
+                <!-- Red forward -->
+                <div class="columns is-mobile">
+                    <div class="column is-three-quarters">
+                        <button @click="Score('redfor')" class="button is-fullwidth has-background-danger">
+                            <img class="icon_b" src="/static/forward_icon.svg" />
+                            {{ redfor.label }}
+                        </button>
+                    </div>
+                    <div class="column is-one-quarters">
+                        <button @click="Auto('redfor')" class="button is-fullwidth has-background-danger">AUTO</button>
+                    </div>
+                </div>
+                <!-- Blue defender -->
+                <div class="columns is-mobile">
+                    <div class="column is-three-quarters">
+                        <button @click="Score('bluedef')" class="button is-fullwidth has-background-info">
+                            <img class="icon_b" src="/static/goal_icon.svg" />
+                            {{ bluedef.label }}
+                        </button>
+                    </div>
+                    <div class="column is-one-quarters">
+                        <button @click="Auto('bluedef')" class="button is-fullwidth has-background-info">AUTO</button>
+                    </div>
+                </div>
+                <!-- Blue forward -->
+                <div class="columns is-mobile">
+                    <div class="column is-three-quarters">
+                        <button @click="Score('bluefor')" class="button is-fullwidth has-background-info">
+                            <img class="icon_b" src="/static/forward_icon.svg" />
+                            {{ bluefor.label }}
+                        </button>
+                    </div>
+                    <div class="column is-one-quarters">
+                        <button @click="Auto('bluefor')" class="button is-fullwidth has-background-info">AUTO</button>
+                    </div>
+                </div>
+                <div class="columns is-mobile">
+                    <div class="column">{{ Message }}</div>
+                </div>
+                <div class="columns is-mobile">
+                    <div class="column">
+                        <button @click="RevertGoal()" class="button is-fullwidth has-background-info">REVERT</button>
+                    </div>
                 </div>
 
             </template>
@@ -81,26 +120,26 @@
             </template>
 
             <!-- Last matches -->
-            <div class="columns">
-                <div>LAST MATCHES:</div>
-                <template v-for="item in this.last_matches">
-                    <div class="c_align">
-                        <div class="scoreboard results_l red">{{ item.red.score }}</div>
-                        <div class="scoreboard results_c">:</div>
-                        <div class="scoreboard results_r blue">{{ item.blue.score }}</div>
-                    </div class="c_align">
-                    <div>
-                        <div class="scoreboard results_l">{{ players[item.red.Defender] }}</div>
-                        <div class="scoreboard results_c"><img class="icon" src="/static/goal_icon.svg" /></div>
-                        <div class="scoreboard results_r">{{ players[item.blue.Defender] }}</div>
-                    </div class="c_align">
-                    <div>
-                        <div class="scoreboard results_l">{{ players[item.red.Forward] }}</div>
-                        <div class="scoreboard results_c"><img class="icon" src="/static/forward_icon.svg" /></div>
-                        <div class="scoreboard results_r">{{ players[item.blue.Forward] }}</div>
+            <div>
+                <div class="section has-text-centered">LAST MATCHES:</div>
+                <div v-for="item in this.last_matches">
+                    <div class="c_align columns is-mobile is-centered">
+                        <div class="scoreboard has-text-right red column">{{ item.red.score }}</div>
+                        <div class="scoreboard has-text-centered column is-narrow">:</div>
+                        <div class="scoreboard has-text-left blue column">{{ item.blue.score }}</div>
+                    </div>
+                    <div class="c_align columns is-mobile is-centered">
+                        <div class="scoreboard has-text-right column">{{ players[item.red.Defender] }}</div>
+                        <div class="scoreboard has-text-centered column is-narrow"><img class="icon" src="/static/goal_icon.svg" /></div>
+                        <div class="scoreboard has-text-left column">{{ players[item.blue.Defender] }}</div>
+                    </div>
+                    <div class="c_align columns is-mobile is-centered">
+                        <div class="scoreboard has-text-right column">{{ players[item.red.Forward] }}</div>
+                        <div class="scoreboard has-text-centered column is-narrow"><img class="icon" src="/static/forward_icon.svg" /></div>
+                        <div class="scoreboard has-text-left column">{{ players[item.blue.Forward] }}</div>
                     </div>
                     <div class="c_align">-----------</div>
-                </template>
+                </div>
             </div>
 
         </div>

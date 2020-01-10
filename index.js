@@ -6,7 +6,7 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "http://10.11.12.6:8081",
+        api_host: "http://10.11.12.6:8000",
         matchid: 0,
         players: {},
         selectList: [],
@@ -16,10 +16,10 @@ var app = new Vue({
         bluedef: null,
         bluefor: null,
         score: {'red': 0, 'blue': 0},
-        temp_score_team: null,
         ApiCallInProgress: false,
         Message: "",
-        last_matches: []
+        last_matches: [],
+        goals: []
     },
     methods: {
         loadPlayersList: function () {
@@ -58,24 +58,54 @@ var app = new Vue({
             })
         },
         Score: function(position) {
-            this.ApiCallInProgress = true
             if ( ['reddef', 'redfor'].indexOf(position) >=0 ) {
-                this.temp_score_team = 'red'
+                this.goals.push({"id": this[position].id, "auto": false, "team": "red"})
+                this.score["red"] += 1
             } else {
-                this.temp_score_team = 'blue'
+                this.goals.push({"id": this[position].id, "auto": false, "team": "blue"})
+                this.score["blue"] += 1
             }
-            this.$http.post(this.api_host + '/api/match/score', {'pid': this[position]["id"], 'matchid': this.matchid})
-            .then(response => {
-                this.ApiCallInProgress = false
-                if (response.body['err'] === 'nil') {
-                    this.score[this.temp_score_team] += 1
-                } else {
-                    this.Message = response.body['err']
+        },
+        Auto: function(position) {
+            if ( ['reddef', 'redfor'].indexOf(position) >=0 ) {
+                this.goals.push({"id": this[position].id, "auto": true, "team": "red"})
+                this.score["blue"] += 1
+            } else {
+                this.goals.push({"id": this[position].id, "auto": true, "team": "blue"})
+                this.score["red"] += 1
+            }
+        },
+        CommitGoal: function(goal) {
+            console.log(goal)
+            const response = fetch(this.api_host + '/api/match/score', {
+                    method: 'POST',
+                    redirect: 'follow',
+                    body: JSON.stringify({'pid': goal.id, 'matchid': this.matchid, 'auto': goal.auto}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                      }
                 }
-            })
+            )
+            const answ = response.json()
+            if (answ['err'] === 'nil') {
+                return true
+            } else {
+                this.Message = response.body['err']
+                return false
+            }
+        },
+        RevertGoal: function() {
+            var last = this.goals.pop()
+            this.score[last.team] -= 1
         },
         endMatch: function () {
-            this.ApiCallInProgress = true
+            //this.ApiCallInProgress = true
+            while(this.goals.length > 0) {
+                r = this.CommitGoal(this.goals[this.goals.length - 1])
+                if (r) {
+                    this.goals.pop()
+                }
+            }
             this.$http.post(this.api_host + '/api/match/end', {'matchid': this.matchid})
             .then(response => {
                 this.ApiCallInProgress = false
@@ -93,9 +123,9 @@ var app = new Vue({
             })
         },
         lastMatches: function() {
-            this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 3})
+            this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 5})
             .then(response => {
-                response.body.forEach(element => {
+                response.body.result.forEach(element => {
                     mr = {"red": {"score": element.Red}, "blue": {"score": element.Blue}}
                     element.Lineup.forEach(pos => {
                         if (pos.team === "Red") {
