@@ -6,7 +6,7 @@ Vue.component('loading', VueLoading)
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "http://10.11.12.6:8000",
+        api_host: "",
         matchid: 0,
         players: {},
         selectList: [],
@@ -59,25 +59,24 @@ var app = new Vue({
         },
         Score: function(position) {
             if ( ['reddef', 'redfor'].indexOf(position) >=0 ) {
-                this.goals.push({"id": this[position].id, "auto": false, "team": "red"})
+                this.goals.push({"id": this[position].id, "auto": "false", "team": "red"})
                 this.score["red"] += 1
             } else {
-                this.goals.push({"id": this[position].id, "auto": false, "team": "blue"})
+                this.goals.push({"id": this[position].id, "auto": "false", "team": "blue"})
                 this.score["blue"] += 1
             }
         },
         Auto: function(position) {
             if ( ['reddef', 'redfor'].indexOf(position) >=0 ) {
-                this.goals.push({"id": this[position].id, "auto": true, "team": "red"})
+                this.goals.push({"id": this[position].id, "auto": "true", "team": "red"})
                 this.score["blue"] += 1
             } else {
-                this.goals.push({"id": this[position].id, "auto": true, "team": "blue"})
+                this.goals.push({"id": this[position].id, "auto": "true", "team": "blue"})
                 this.score["red"] += 1
             }
         },
         CommitGoal: function(goal) {
-            console.log(goal)
-            const response = fetch(this.api_host + '/api/match/score', {
+            return fetch(this.api_host + '/api/match/score', {
                     method: 'POST',
                     redirect: 'follow',
                     body: JSON.stringify({'pid': goal.id, 'matchid': this.matchid, 'auto': goal.auto}),
@@ -85,42 +84,48 @@ var app = new Vue({
                         'Content-Type': 'application/json'
                       }
                 }
-            )
-            const answ = response.json()
-            if (answ['err'] === 'nil') {
-                return true
-            } else {
-                this.Message = response.body['err']
-                return false
-            }
+            ).then(response => response.json());
+        },
+        SendGoals: async function () {
+            
         },
         RevertGoal: function() {
             var last = this.goals.pop()
             this.score[last.team] -= 1
         },
-        endMatch: function () {
-            //this.ApiCallInProgress = true
-            while(this.goals.length > 0) {
-                r = this.CommitGoal(this.goals[this.goals.length - 1])
-                if (r) {
-                    this.goals.pop()
+        SubmitMatch: function() {
+            return fetch(this.api_host + '/api/match/end', {
+                method: 'POST',
+                redirect: 'follow',
+                body: JSON.stringify({'matchid': this.matchid}),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            }
-            this.$http.post(this.api_host + '/api/match/end', {'matchid': this.matchid})
-            .then(response => {
-                this.ApiCallInProgress = false
-                if ( 'Winner' in response.body) {
-                    this.matchid = 0
-                    this.reddef = null
-                    this.redfor = null
-                    this.bluedef =  null
-                    this.bluefor =  null
-                    this.Message = "last winner: " + response.body['Winner']
-                    this.score = {'red': 0, 'blue': 0}
+            }).then(response => response.json());
+        },
+        endMatch: async function () {
+            this.ApiCallInProgress = true
+            while(this.goals.length > 0) {
+                const resp = await this.CommitGoal(this.goals[this.goals.length - 1])
+                if (resp['err'] === 'nil') {
+                    this.goals.pop()
                 } else {
                     this.Message = response.body['err']
                 }
-            })
+            }
+            const matchcommit = await this.SubmitMatch()
+            this.ApiCallInProgress = false
+            if ( 'Winner' in matchcommit) {
+                this.matchid = 0
+                this.reddef = null
+                this.redfor = null
+                this.bluedef =  null
+                this.bluefor =  null
+                this.Message = "last winner: " + matchcommit['Winner']
+                this.score = {'red': 0, 'blue': 0}
+            } else {
+                this.Message = matchcommit['err']
+            }
         },
         lastMatches: function() {
             this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 5})
