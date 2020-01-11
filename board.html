@@ -29,6 +29,7 @@
                 </div>
             </nav>
             <div class="columns">
+		<!-- total goals -->
                 <div class="column">
                     <div class="table-container">
                         <h1 class="subtitle is-3 has-text-info">Scorers:</h1>
@@ -47,6 +48,26 @@
                         </table>
                     </div>
                 </div>
+		<!-- avg goals -->
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">avg. Goals</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="id, key in ratings_goals_avg">
+                                    <td>{{ Number.parseFloat(key).toFixed(2) }}</td><td>{{ players[id] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+		<!-- total win rate -->
                 <div class="column">
                     <div class="table-container">
                         <h1 class="subtitle is-3 has-text-info">Win rate:</h1>
