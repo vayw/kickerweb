@@ -68,10 +68,10 @@ var app = new Vue({
         },
         Auto: function(position) {
             if ( ['reddef', 'redfor'].indexOf(position) >=0 ) {
-                this.goals.push({"id": this[position].id, "auto": "true", "team": "red"})
+                this.goals.push({"id": this[position].id, "auto": "true", "team": "blue"})
                 this.score["blue"] += 1
             } else {
-                this.goals.push({"id": this[position].id, "auto": "true", "team": "blue"})
+                this.goals.push({"id": this[position].id, "auto": "true", "team": "red"})
                 this.score["red"] += 1
             }
         },
@@ -86,12 +86,11 @@ var app = new Vue({
                 }
             ).then(response => response.json());
         },
-        SendGoals: async function () {
-            
-        },
         RevertGoal: function() {
-            var last = this.goals.pop()
-            this.score[last.team] -= 1
+            if (this.goals.length > 0) {
+                var last = this.goals.pop()
+                this.score[last.team] -= 1
+            }
         },
         SubmitMatch: function() {
             return fetch(this.api_host + '/api/match/end', {
