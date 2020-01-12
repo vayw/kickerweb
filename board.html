@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </nav>
-            <div class="columns">
+            <div class="columns is-multiline">
 		<!-- total goals -->
                 <div class="column">
                     <div class="table-container">
@@ -51,17 +51,19 @@
 		<!-- avg goals -->
                 <div class="column">
                     <div class="table-container">
-                        <h1 class="subtitle is-3 has-text-info">avg. Goals</h1>
+                        <h1 class="subtitle is-3 has-text-info">avg. Goals:</h1>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>Count</th>
                                     <th>Player</th>
+                                    <th>Games</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="id, key in ratings_goals_avg">
-                                    <td>{{ Number.parseFloat(key).toFixed(2) }}</td><td>{{ players[id] }}</td>
+                                <tr v-for="value in ratings_goals_avg">
+                                    <td>{{ Number.parseFloat(value[1]).toFixed(2) }}</td><td>{{ players[value[0]] }}</td>
+                                    <td>{{ value[2] }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -137,8 +139,88 @@
                         </table>
                     </div>
                 </div>
+                <!-- goals forwards -->
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">scorers. Forwards:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_goals_forwards">
+                                    <td>{{ item.Total }}</td><td>{{ players[item.Id] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- avg goals forwards-->
+                <div class="column">
+                    <h1 class="subtitle is-3 has-text-info">avg. Goals Forwards:</h1>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                    <th>Games</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="value in ratings_goals_avg_forwards">
+                                    <td>{{ Number.parseFloat(value[1]).toFixed(2) }}</td><td>{{ players[value[0]] }}</td>
+                                    <td>{{ value[2] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- goals defenders -->
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">scorers. Defenders:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_goals_defenders">
+                                    <td>{{ item.Total }}</td><td>{{ players[item.Id] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- avg goals defenders-->
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info">avg. Goals Defenders:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                    <th>Games</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="value in ratings_goals_avg_defenders">
+                                    <td>{{ Number.parseFloat(value[1]).toFixed(2) }}</td><td>{{ players[value[0]] }}</td>
+                                    <td>{{ value[2] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    <script src="board.js"></script>
+    <script src="board.js?ver=20200112"></script>
     </body>
 </html>
