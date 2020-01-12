@@ -15,7 +15,8 @@ var app = new Vue({
         ratings_goals_forwards: {},
         ratings_goals_avg_forwards: {},
         ratings_goals_defenders: {},
-	    ratings_goals_avg_defenders: {},
+        ratings_goals_avg_defenders: {},
+        ratings_autogoals: {},
         overall: {},
         ratings_winrate: {},
         matches: []
@@ -78,6 +79,11 @@ var app = new Vue({
                 }).reverse();
             });
         },
+        loadGoalsRatingsAuto: function () {
+            this.$http.post(this.api_host + '/api/stats/ratings/goals', {'position': 'Defender', 'auto': "True"}).then(response => {
+                this.ratings_autogoals = response.body.result
+            });
+        },
     },
     mounted: function() {
         this.$nextTick(function () {
@@ -87,6 +93,7 @@ var app = new Vue({
             app.loadWinrate()
             app.loadGoalsRatingsForwards()
             app.loadGoalsRatingsDefenders()
+            app.loadGoalsRatingsAuto()
         })
     }
 })

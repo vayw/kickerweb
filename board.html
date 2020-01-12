@@ -219,8 +219,27 @@
                         </table>
                     </div>
                 </div>
+                <!-- autogoals -->
+                <div class="column">
+                    <div class="table-container">
+                        <h1 class="subtitle is-3 has-text-info has-background-warning">Autogoals:</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Player</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in ratings_autogoals">
+                                    <td>{{ item.Total }}</td><td>{{ players[item.Id] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    <script src="board.js?ver=20200112"></script>
+    <script src="board.js?ver=20200112v2"></script>
     </body>
 </html>
