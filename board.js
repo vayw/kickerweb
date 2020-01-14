@@ -80,7 +80,7 @@ var app = new Vue({
             });
         },
         loadGoalsRatingsAuto: function () {
-            this.$http.post(this.api_host + '/api/stats/ratings/goals', {'position': 'Defender', 'auto': "True"}).then(response => {
+            this.$http.post(this.api_host + '/api/stats/ratings/goals', {'auto': "True"}).then(response => {
                 this.ratings_autogoals = response.body.result
             });
         },
