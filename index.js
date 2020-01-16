@@ -174,8 +174,12 @@ var app = new Vue({
                 this.redfor = this.$cookies.get("redfor")
                 this.bluedef = this.$cookies.get("bluedef")
                 this.bluefor = this.$cookies.get("bluefor")
-                this.score = this.$cookies.get("score")
-                this.goals = this.$cookies.get("goals")["goals"]
+                if (this.$cookies.get("score") != null) {
+                    this.score = this.$cookies.get("score")
+                }
+                if (this.$cookies.get("goals")["goals"] != null) {
+                    this.goals = this.$cookies.get("goals")["goals"]
+                }
             }
         },
         clearMatch: function() {
