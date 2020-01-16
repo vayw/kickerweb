@@ -40,6 +40,13 @@ var app = new Vue({
                 return false
             }
         },
+        gotWinner: function () {
+            if (this.score.red === 5 || this.score.blud === 5) {
+                return false
+            } else {
+                return true
+            }
+        },
         startMatch: function () {
             this.ApiCallInProgress = true
             this.$http.post(this.api_host + '/api/match/start', {'lineup': [

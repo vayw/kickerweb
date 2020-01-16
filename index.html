@@ -10,18 +10,19 @@
         <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
         <link rel="stylesheet" href="kick.css?ver=20200112">
+        <script src="https://kit.fontawesome.com/31cf2f7d23.js" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <div class="container" id="app">
             <template v-if="matchid != 0">
-                <div class="columns is-mobile is-centered">
-                    <div class="column is-full">
-                        <loading :active.sync="ApiCallInProgress"
-                        :can-cancel="false">
-                        </loading>
-                        <button @click="endMatch()" class="button is-fullwidth">Finish Match</button>
+                <div class="columns is-mobile">
+                    <div class="column has-text-centered">
+                        <i class="fas fa-cat"></i><i class="fas fa-crutch"></i><i class="far fa-dizzy"></i>
+                        <i class="fas fa-crow"></i><i class="far fa-frown"></i><i class="fas fa-glass-cheers"></i>
+                        <i class="fas fa-hammer"></i><i class="fab fa-linux"></i><i class="fas fa-socks"></i>
                     </div>
+                </div>
                 </div>
                 <div class="c_align columns is-mobile is-centered">
                     <div class="scoreboard has-text-right has-background-danger column">{{ score.red }}</div>
@@ -81,7 +82,23 @@
                 </div>
                 <div class="columns is-mobile">
                     <div class="column">
-                        <button @click="RevertGoal()" class="button is-fullwidth has-background-info">REVERT</button>
+                        <button @click="RevertGoal()" class="button is-fullwidth has-background-warning">REVERT</button>
+                    </div>
+                </div>
+                <div class="columns is-mobile">
+                    <div class="column has-text-centered">
+                        <i class="fab fa-accessible-icon"></i><i class="far fa-futbol"></i>
+                        <i class="far fa-angry"></i><i class="fas fa-atom"></i><i class="fas fa-award"></i>
+                        <i class="fas fa-balance-scale-left"></i><i class="fas fa-beer"></i><i class="fas fa-bomb"></i>
+                        <i class="fas fa-blind"></i><i class="fas fa-broom"></i><i class="fas fa-cannabis"></i>
+                    </div>
+                </div>
+                <div class="columns is-mobile is-centered">
+                    <div class="column is-full">
+                        <loading :active.sync="ApiCallInProgress"
+                        :can-cancel="false">
+                        </loading>
+                        <button @click="endMatch()" :disabled="gotWinner()" class="button is-fullwidth has-background-primary">Finish Match</button>
                     </div>
                 </div>
 
@@ -143,7 +160,7 @@
             </div>
 
         </div>
-        <script src="index.js?ver=20200112"></script>
+        <script src="index.js?ver=20200116v2"></script>
 
         <!-- credits -->
         <div id="Footer">Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
