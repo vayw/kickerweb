@@ -9,7 +9,7 @@ Vue.$cookies.config('4d')
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "http://0.0.0.0:8000",
+        api_host: "",
         matchid: 0,
         players: {},
         selectList: [],
