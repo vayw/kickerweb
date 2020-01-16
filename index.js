@@ -2,11 +2,14 @@ Vue.use("vue-resource")
 Vue.component('v-select', VueSelect.VueSelect);
 Vue.use(VueLoading);
 Vue.component('loading', VueLoading)
+Vue.use('vue-cookies')
+
+Vue.$cookies.config('4d')
 
 var app = new Vue({
     el: '#app',
     data: {
-        api_host: "",
+        api_host: "http://0.0.0.0:8000",
         matchid: 0,
         players: {},
         selectList: [],
@@ -41,7 +44,7 @@ var app = new Vue({
             }
         },
         gotWinner: function () {
-            if (this.score.red === 5 || this.score.blud === 5) {
+            if (this.score.red === 5 || this.score.blue === 5) {
                 return false
             } else {
                 return true
@@ -58,6 +61,12 @@ var app = new Vue({
                 if (response.body['err'] === 'nil') {
                     this.matchid = response.body['matchid']
                     this.ApiCallInProgress = false
+                    this.$cookies.set("matchid", this.matchid)
+                    this.$cookies.set("reddef", this.reddef)
+                    this.$cookies.set("redfor", this.redfor)
+                    this.$cookies.set("bluedef", this.bluedef)
+                    this.$cookies.set("bluefor", this.bluefor)
+                    this.$cookies.set("active", true)
                 } else {
                     console.log(response.body['err'])
                     this.Message = response.body['err']
@@ -72,6 +81,8 @@ var app = new Vue({
                 this.goals.push({"id": this[position].id, "auto": "false", "team": "blue"})
                 this.score["blue"] += 1
             }
+            this.$cookies.set("goals", {"goals": this.goals})
+            this.$cookies.set("score", this.score)
         },
         Auto: function(position) {
             if ( ['reddef', 'redfor'].indexOf(position) >=0 ) {
@@ -81,6 +92,8 @@ var app = new Vue({
                 this.goals.push({"id": this[position].id, "auto": "true", "team": "red"})
                 this.score["red"] += 1
             }
+            this.$cookies.set("goals", {"goals": this.goals})
+            this.$cookies.set("score", this.score)
         },
         CommitGoal: function(goal) {
             return fetch(this.api_host + '/api/match/score', {
@@ -98,6 +111,8 @@ var app = new Vue({
                 var last = this.goals.pop()
                 this.score[last.team] -= 1
             }
+            this.$cookies.set("goals", {"goals": this.goals})
+            this.$cookies.set("score", this.score)
         },
         SubmitMatch: function() {
             return fetch(this.api_host + '/api/match/end', {
@@ -129,12 +144,15 @@ var app = new Vue({
                 this.bluefor =  null
                 this.Message = "last winner: " + matchcommit['Winner']
                 this.score = {'red': 0, 'blue': 0}
+                this.$cookies.set("active", false)
+                this.lastMatches()
             } else {
                 this.Message = matchcommit['err']
             }
         },
         lastMatches: function() {
-            this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 5})
+            this.last_matches = []
+            this.$http.post(this.api_host + '/api/stats/matchresults', {'num': 3})
             .then(response => {
                 response.body.result.forEach(element => {
                     mr = {"red": {"score": element.Red}, "blue": {"score": element.Blue}}
@@ -148,12 +166,34 @@ var app = new Vue({
                     this.last_matches.push(mr)
                 })
             })
+        },
+        loadMatchFromCookies: function() {
+            if (this.$cookies.get("active") === "true") {
+                this.matchid = Number(this.$cookies.get("matchid"))
+                this.reddef = this.$cookies.get("reddef")
+                this.redfor = this.$cookies.get("redfor")
+                this.bluedef = this.$cookies.get("bluedef")
+                this.bluefor = this.$cookies.get("bluefor")
+                this.score = this.$cookies.get("score")
+                this.goals = this.$cookies.get("goals")["goals"]
+            }
+        },
+        clearMatch: function() {
+            this.$cookies.set("active", false)
+            this.matchid = 0
+            this.reddef = null
+            this.redfor = null
+            this.bluedef = null
+            this.bluefor = null
+            this.score = {'red': 0, 'blue': 0}
+            this.goals = []
         }
     },
     mounted: function() {
         this.$nextTick(function () {
             app.loadPlayersList()
             app.lastMatches()
+            app.loadMatchFromCookies()
         })
     }
 })
